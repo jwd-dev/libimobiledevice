@@ -94,8 +94,8 @@ jobs:
               https://gist.github.com/nikias/94c99fd145a75a5104415e5117b0cafa/raw/5209dfbff5a871a14272afe4794e76eb4cf6f062/libcrypto.35.tbd
           curl -o lib/libssl.35.tbd -Ls \
               https://gist.github.com/nikias/94c99fd145a75a5104415e5117b0cafa/raw/5209dfbff5a871a14272afe4794e76eb4cf6f062/libssl.35.tbd
-          echo "LIBSSL=`pwd`/../lib/libssl.35.tbd" >> $GITHUB_ENV
-          echo "LIBCRYPTO=`pwd`/../lib/libcrypto.35.tbd" >> $GITHUB_ENV
+          echo "LIBSSL=`pwd`/lib/libssl.35.tbd" >> $GITHUB_ENV
+          echo "LIBCRYPTO=`pwd`/lib/libcrypto.35.tbd" >> $GITHUB_ENV
           LIBRESSL_VER=2.2.7
           echo "LIBRESSL_VER=$LIBRESSL_VER" >> $GITHUB_ENV
           FILENAME="libressl-$LIBRESSL_VER.tar.gz"
