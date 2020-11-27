@@ -6,6 +6,9 @@ jobs:
   build-linux-ubuntu:
     runs-on: ubuntu-latest
     steps:
+    - name: install dependencies
+      run: |
+          sudo apt-get install cython
     - name: prepare environment
       run: |
           echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
@@ -84,8 +87,27 @@ jobs:
           done
           sudo cp -r extract/* /
     - uses: actions/checkout@v2
+    - name: install additional requirements
+      run: |
+          mkdir -p lib
+          curl -o lib/libcrypto.35.tbd -Ls \
+              https://gist.github.com/nikias/94c99fd145a75a5104415e5117b0cafa/raw/5209dfbff5a871a14272afe4794e76eb4cf6f062/libcrypto.35.tbd
+          curl -o lib/libssl.35.tbd -Ls \
+              https://gist.github.com/nikias/94c99fd145a75a5104415e5117b0cafa/raw/5209dfbff5a871a14272afe4794e76eb4cf6f062/libssl.35.tbd
+          echo "LIBSSL=`pwd`/../lib/libssl.35.tbd" >> $GITHUB_ENV
+          echo "LIBCRYPTO=`pwd`/../lib/libcrypto.35.tbd" >> $GITHUB_ENV
+          LIBRESSL_VER=2.2.7
+          echo "LIBRESSL_VER=$LIBRESSL_VER" >> $GITHUB_ENV
+          FILENAME="libressl-$LIBRESSL_VER.tar.gz"
+          curl -o $FILENAME -Ls "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/$FILENAME"
+          mkdir -p deps
+          tar -C deps -xzf $FILENAME
+          echo "DEPSDIR=`pwd`/deps" >> $GITHUB_ENV
     - name: autogen
-      run: ./autogen.sh PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+      run: |
+          ./autogen.sh PKG_CONFIG_PATH=/usr/local/lib/pkgconfig --enable-debug \
+              openssl_CFLAGS="-I${{ env.DEPSDIR }}/libressl-${{ env.LIBRESSL_VER }}/include" \
+              openssl_LIBS="-Xlinker ${{ env.LIBSSL }} -Xlinker ${{ env.LIBCRYPTO }}"
     - name: make
       run: make
     - name: make install
