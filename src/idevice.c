@@ -41,9 +41,11 @@
 
 #include "idevice.h"
 #include "common/userpref.h"
-#include "common/socket.h"
-#include "common/thread.h"
+//#include "common/socket.h"
+//#include "common/thread.h"
 #include "common/debug.h"
+#include <libimobiledevice-common/socket.h>
+#include <libimobiledevice-common/thread.h>
 
 #ifdef WIN32
 #include <windows.h>

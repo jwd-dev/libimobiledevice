@@ -10,6 +10,7 @@ AM_CFLAGS = \
 	$(libplist_CFLAGS) \
 	$(LFS_CFLAGS) \
 	$(openssl_CFLAGS) \
+	$(limd_common_CFLAGS) \
 	$(PTHREAD_CFLAGS)
 
 AM_LDFLAGS = \
@@ -19,6 +20,7 @@ AM_LDFLAGS = \
 	$(libusbmuxd_LIBS) \
 	$(libgcrypt_LIBS) \
 	$(openssl_LIBS) \
+	$(limd_common_LIBS) \
 	$(PTHREAD_LIBS)
 
 lib_LTLIBRARIES = libimobiledevice-1.0.la
